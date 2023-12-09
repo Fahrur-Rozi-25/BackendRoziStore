@@ -1,16 +1,30 @@
 // import { getAPI } from "./getPriceList.js";
 import express from "express";
 import axios from "axios";
+import cors from "cors"
+import bodyParser from "body-parser";
 import dotenv from 'dotenv';
-import { ref_id } from "./data/ref_idGenerator.js";
-import { Order } from "./Digiflazz/orderDigiflazz.js";
+import router from "./route/mainRoute.js";
+import connectDB from "./Database/connectToDB.js";
 
 // Panggil konfigurasi dotenv
 dotenv.config();
+
 const app = express()
+app.use(cors())
+app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(router)
+
+connectDB()
 
 
 
-// getAPI()
+app.get("/" , (req , res) => {
+    res.json({message: "This Server Is Alive!"})
+})
 
-Order()
+
+app.listen(3000, () => {
+    console.log("Server Up!");
+})
