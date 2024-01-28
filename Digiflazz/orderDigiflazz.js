@@ -8,7 +8,7 @@ import Transaction from "../Database/trx_Schema.js";
 // Panggil konfigurasi dotenv
 dotenv.config();
 
-export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , verify) => {
+export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , verify , statusPembayaran , buyerName) => {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -36,12 +36,14 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
     if (Verification === process.env['APP_VERIFICATION_ORDER']) {
     let hasil = null;
         try {
+          const transaction = await Transaction.findOne({ transaction_id: transactionID });
             const response = await axios.post(url, data);
             const resData = response.data.data;
-            const transaction = await Transaction.findOne({ transaction_id: transactionID });
 
             if (transaction) {
                 // Tambahkan ref_id ke dokumen tersebut
+                transaction.buyerName = buyerName
+                transaction.statusMetodePembayaran = statusPembayaran    
                 transaction.ref_id = resData.ref_id;
                 transaction.status = resData.status;
                 transaction.message = resData.message;
@@ -87,7 +89,7 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
         }
 
     } else {
-        return "unauthorized!"
+        return "unauthorized! From Internal"
     }
 
 }

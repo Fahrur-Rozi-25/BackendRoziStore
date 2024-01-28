@@ -35,6 +35,7 @@ const TransactionSchema = new mongoose.Schema({
     buyerPrice: String,
     sellerPrice: String,
     telegram: String,
+    buyerName: String,
     createdAt: {
         type: Date,
         default: Date.now,
