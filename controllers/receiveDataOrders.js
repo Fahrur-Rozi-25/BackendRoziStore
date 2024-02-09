@@ -1,5 +1,5 @@
 import { OrderDigiflazz } from "../Digiflazz/orderDigiflazz.js";
-import { DecryptAutomated } from "../data/encrypt.js";
+import { DecryptAutomated } from "../utils/encrypt.js";
 
 export const DataOrders = async (req , res) => {
 

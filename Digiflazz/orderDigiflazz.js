@@ -1,9 +1,9 @@
 import axios from "axios";
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
-import { ref_id } from "../data/ref_idGenerator.js";
-import { hashData } from "../data/dataToHash.js";
-import Transaction from "../Database/trx_Schema.js";
+import { ref_id } from "../utils/ref_idGenerator.js";
+import { hashData } from "../utils/dataToHash.js";
+import Transaction from "../Database/models/trx_Schema.js";
 
 // Panggil konfigurasi dotenv
 dotenv.config();
@@ -41,6 +41,7 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
             const resData = response.data.data;
 
             if (transaction) {
+              console.log(resData.status);
                 // Tambahkan ref_id ke dokumen tersebut
                 transaction.buyerName = buyerName
                 transaction.statusMetodePembayaran = statusPembayaran    
@@ -50,6 +51,8 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
                 transaction.sn = resData.sn;
                 transaction.customer_no = resData.customer_no;
                 transaction.telegram = resData.tele;
+
+                
                 
                 // Simpan perubahan dokumen ke dalam database
                 await transaction.save();
