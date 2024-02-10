@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { ref_id } from "../utils/ref_idGenerator.js";
 import { hashData } from "../utils/dataToHash.js";
 import Transaction from "../Database/models/trx_Schema.js";
+import Order from "../Database/models/orderSchema.js";
 
 // Panggil konfigurasi dotenv
 dotenv.config();
@@ -37,12 +38,22 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
     let hasil = null;
         try {
           const transaction = await Transaction.findOne({ transaction_id: transactionID });
+          const order = await Order.findOne({ transaction_id: transactionID });
             const response = await axios.post(url, data);
             const resData = response.data.data;
 
-            if (transaction) {
-              console.log(resData.status);
+            if (order) {
                 // Tambahkan ref_id ke dokumen tersebut
+                order.ref_id = resData.ref_id;
+
+                // Simpan perubahan dokumen ke dalam database
+                await order.save();
+                console.log('ref_id berhasil ditambahkan. ORDER');
+              } else {
+                console.log('Dokumen dengan transaction_id yang diberikan tidak ditemukan.');
+              }
+
+            if (transaction) {
                 transaction.buyerName = buyerName
                 transaction.statusMetodePembayaran = statusPembayaran    
                 transaction.ref_id = resData.ref_id;
@@ -56,7 +67,7 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
                 
                 // Simpan perubahan dokumen ke dalam database
                 await transaction.save();
-                console.log('ref_id berhasil ditambahkan.');
+                console.log('ref_id berhasil ditambahkan.TRX');
               } else {
                 console.log('Dokumen dengan transaction_id yang diberikan tidak ditemukan.');
               }

@@ -10,6 +10,7 @@ const OrderSchema = new mongoose.Schema({
     price: String,
     seller_name: String,
     buyer_sku_code: String,
+    ref_id: String,
     userId: String,
     verify: String,
 
