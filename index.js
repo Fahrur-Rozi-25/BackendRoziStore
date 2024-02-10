@@ -1,6 +1,5 @@
 // import { getAPI } from "./getPriceList.js";
 import express from "express";
-import axios from "axios";
 import cors from "cors"
 import bodyParser from "body-parser";
 import dotenv from 'dotenv';
@@ -21,10 +20,10 @@ connectDB()
 
 
 app.get("/" , (req , res) => {
-    res.json({message: "This Server Is Alive!"})
+    res.json({message: "This Server Is Already!"})
 })
 
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log("Server Up!");
 })
