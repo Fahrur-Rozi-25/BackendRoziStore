@@ -13,6 +13,21 @@ export function Encrypt(data, key) {
     return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
   }
 
+export function decrypt12(data, key) {
+    if (key.length !== 32) {
+        throw new Error('Invalid key length. Key should be 32 bytes (256 bits).');
+    }
+
+    const [ivHex, encryptedHex] = data.split(':');
+    const iv = Buffer.from(ivHex, 'hex');
+    const encrypted = Buffer.from(encryptedHex, 'hex');
+
+    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
+    let decrypted = decipher.update(encrypted);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+    return decrypted.toString();
+}
 
   export function Decrypt(text, key) {
     if (key.length !== 32) {
