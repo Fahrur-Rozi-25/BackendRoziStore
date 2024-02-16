@@ -9,7 +9,7 @@ import Order from "../Database/models/orderSchema.js";
 // Panggil konfigurasi dotenv
 dotenv.config();
 
-export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , verify , statusPembayaran , buyerName) => {
+export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , verify , statusPembayaran , buyerName , profit) => {
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -55,6 +55,7 @@ export const OrderDigiflazz = async (transactionID ,skuCode, dataCostumer , veri
 
             if (transaction) {
                 transaction.buyerName = buyerName
+                transaction.profit = profit
                 transaction.statusMetodePembayaran = statusPembayaran    
                 transaction.ref_id = resData.ref_id;
                 transaction.status = resData.status;

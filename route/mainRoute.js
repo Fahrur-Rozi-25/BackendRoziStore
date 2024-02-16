@@ -10,6 +10,6 @@ router.post('/senddataorder' , DataOrders)
 router.post('/senddataorderFromMobile' , DataOrdersMobile)
 router.post('/postOrder' , createOrder)
 router.delete('/deleteOrder/:id',deleteOrder)
-
+router.delete('/deleteTRX')
 
 export default router;
